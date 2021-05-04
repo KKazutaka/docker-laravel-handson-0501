@@ -1,0 +1,11 @@
++--------+----------+--------------------+----------------+--------------------------------------------------+------------+
+| Domain | Method   | URI                | Name           | Action                                           | Middleware |
++--------+----------+--------------------+----------------+--------------------------------------------------+------------+
+|        | GET|HEAD | /                  |                | Closure                                          | web        |
+|        | GET|HEAD | api/user           |                | Closure                                          | api        |
+|        |          |                    |                |                                                  | auth:api   |
+|        | GET|HEAD | contacts           | contacts.index | App\Http\Controllers\ContactFormController@index | web        |
+|        | GET|HEAD | contacts/{contact} | contacts.show  | App\Http\Controllers\ContactFormController@show  | web        |
+|        | GET|HEAD | myapp              |                | Closure                                          | web        |
+|        | GET|HEAD | tests/test         |                | App\Http\Controllers\TestController@index        | web        |
++--------+----------+--------------------+----------------+--------------------------------------------------+------------+
