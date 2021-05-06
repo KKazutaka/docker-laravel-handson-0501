@@ -46,23 +46,19 @@
 <div class="button_wrapper">
     <!-- create/store -->
     <button class="register_today">
-        <a href="register_today.php">Register today</a>
+        <a href="{{route('daily_habit.create')}}">Register today</a>
     </button>
 
     <!-- show -->
     <button class="show_record">
-        <a href="show_record.php">Show Record</a>
+        <a href="{{route('daily_habit.index')}}">Show Record</a>
     </button>
 
     <!-- create/store -->
     <button class="register_habit">
-        <a href="register_habit.php">Register Habit</a>
+        <a href="{{route('habit.index')}}">Register Habit</a>
     </button>
 
-
-    <button class="try_data">
-        <a href="try_data.php">Try data</a>
-    </button>
 
 </div>
 

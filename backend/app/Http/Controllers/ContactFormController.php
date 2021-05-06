@@ -103,7 +103,6 @@ class ContactFormController extends Controller
         $contact->gender = $request->input('gender');
         $contact->age = $request->input('age');
         $contact->contact = $request->input('contact');
-        // dd($your_name, $title);
         $contact->save();
 
         return redirect('contacts/index');
