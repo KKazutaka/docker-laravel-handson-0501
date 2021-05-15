@@ -3,10 +3,11 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Habit;
+use Carbon\Carbon;
+use App\Models\DailyHabit;
 use Illuminate\Support\Facades\DB;
 
-class HabitController extends Controller
+class PGController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -15,9 +16,37 @@ class HabitController extends Controller
      */
     public function index()
     {
-        $habits = Habit::all();
-        // dd($habits);
-        return view('habit.index', \compact('habits'));
+        //先週の初めと終わりの日にちをとってくる。
+        $lastWeek = Carbon::parse('last week');
+        $lastWeekStart = $lastWeek->startOfWeek()->format('Y-m-d');
+        $lastWeekEnd = $lastWeek->endOfWeek()->format('Y-m-d');
+
+        // DailyHabitsから該当する内容をとってくる。
+        $lastWeekDailyHabits=DB::table('daily_habits')
+        ->where('done_at', '>=', $lastWeekStart)
+        ->where('done_at', '<=', $lastWeekEnd)
+        ->get()
+        ->toArray();
+        // dd($lastWeekDailyHabits);
+
+        $weekly_sum_taken_times = [];
+        foreach ($lastWeekDailyHabits as $lastWeekDailyHabit) {
+            $done_at = $lastWeekDailyHabit->done_at;
+            $habit_id = $lastWeekDailyHabit->habit_id;
+            $taken_time = $lastWeekDailyHabit->taken_time;
+
+            if (!isset($weekly_sum_taken_times[$habit_id])) {
+                $weekly_sum_taken_times += [$habit_id];
+                $weekly_sum_taken_times[$habit_id]=$taken_time;
+            } else {
+                $weekly_sum_taken_times[$habit_id]+=$taken_time;
+            }
+        }
+        // dd($weekly_sum_taken_times);
+
+
+
+        return view('pg.index', \compact('weekly_sum_taken_times'));
     }
 
     /**
@@ -38,11 +67,7 @@ class HabitController extends Controller
      */
     public function store(Request $request)
     {
-        $habit = new Habit;
-        $habit->habits_name=$request->input('habits_name');
-        $habit->description=$request->input('description');
-        $habit->save();
-        return redirect('habits/index');
+        //
     }
 
     /**
@@ -53,8 +78,7 @@ class HabitController extends Controller
      */
     public function show($id)
     {
-        $habit=Habit::find($id);
-        return view('habit.show', compact('habit'));
+        //
     }
 
     /**
@@ -65,8 +89,7 @@ class HabitController extends Controller
      */
     public function edit($id)
     {
-        $habit=Habit::find($id);
-        return view('habit.edit', compact('habit'));
+        //
     }
 
     /**
@@ -78,11 +101,7 @@ class HabitController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $habit = Habit::find($id);
-        $habit->habits_name=$request->input('habits_name');
-        $habit->description=$request->input('description');
-        $habit->save();
-        return redirect('habits/index');
+        //
     }
 
     /**
@@ -93,9 +112,6 @@ class HabitController extends Controller
      */
     public function destroy($id)
     {
-        $habit=Habit::find($id);
-        var_dump("hello");
-        $habit->delete();
-        return \redirect('myapp/habits/index');
+        //
     }
 }

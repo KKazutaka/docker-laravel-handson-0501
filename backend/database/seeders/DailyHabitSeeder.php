@@ -18,16 +18,28 @@ class DailyHabitSeeder extends Seeder
             [
                 'habit_id'=>1,
                 'taken_time'=>33,
-                'done_at'=>"2020-04-05"
+                'done_at'=>"2021-05-06"
             ],[
                 'habit_id'=>1,
                 'taken_time'=>44,
-                'done_at'=>"2020-04-05"
+                'done_at'=>"2021-05-06"
+            ],[
+                'habit_id'=>1,
+                'taken_time'=>40,
+                'done_at'=>"2021-05-07"
             ],[
                 'habit_id'=>2,
+                'taken_time'=>10,
+                'done_at'=>"2021-05-06"
+            ],[
+                'habit_id'=>2,
+                'taken_time'=>77,
+                'done_at'=>"2021-05-07"
+            ],[
+                'habit_id'=>3,
                 'taken_time'=>55,
-                'done_at'=>"2020-04-05"
+                'done_at'=>"2021-05-07"
             ]
-        ]);
+            ]);
     }
 }

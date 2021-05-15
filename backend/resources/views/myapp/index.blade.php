@@ -25,24 +25,46 @@
     <div id="container">
 
 <div class="headline">
-    <h1 >トップページaa</h1>
-    <h4>Show Target</h4>
+    <h1 >Show yourself</h1>
 </div>
 
 <div class="show_process_wrapper alert alert-warning">
     <div class="show_process_week">
-        <h3>今週１週間の成果</h3>
-        <p>期間：xx〜xx</p>
-    @foreach($habits as $habit)
-        <p>{{$habit->habits_name}}:xx時間</p>
+        <h3>This Week</h3>
+        <p>{{$thisWeekStart}}〜{{$thisWeekEnd}}</p>
+
+    @foreach($this_week_sum_taken_times as $habit_name => $taken_time)
+        <p>{{$habit_name}} : {{$taken_time}} m</p>
     @endforeach
     </div>
+
     <div class="show_process_month">
-        <h3>今月の成果</h3>
-        <p>期間：xx〜xx</p>
-        <p>筋トレ:xx時間</p>
-        <p>英語:xx時間</p>
+        <h3>This Month</h3>
+        <p>{{$thisMonthStart}}〜{{$thisMonthEnd}}</p>
+    @foreach($this_month_sum_taken_times as $habit_name => $taken_time)
+        <p>{{$habit_name}} : {{$taken_time}} m</p>
+    @endforeach
     </div>
+
+</div>
+<div class="show_process_wrapper alert alert-warning">
+    <div class="show_process_week">
+        <h3>先週１週間の成果</h3>
+        <p>期間：{{$lastWeekStart}}〜{{$lastWeekEnd}}</p>
+
+    @foreach($weekly_sum_taken_times as $habit_name => $taken_time)
+        <p>{{$habit_name}} : {{$taken_time}} m</p>
+    @endforeach
+    </div>
+
+    <div class="show_process_month">
+        <h3>先月の成果</h3>
+        <p>期間：{{$lastMonthStart}}〜{{$lastMonthEnd}}</p>
+    @foreach($month_sum_taken_times as $habit_name => $taken_time)
+        <p>{{$habit_name}} : {{$taken_time}} m</p>
+    @endforeach
+    </div>
+
 </div>
 
 <div class="button_wrapper">

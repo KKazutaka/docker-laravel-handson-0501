@@ -29,16 +29,16 @@ class DailyHabitController extends Controller
             $habit_id = $daily_habit->habit_id;
             $taken_time = $daily_habit->taken_time;
 
-            // done_at=>habit_idが存在しないなら、$taken_timeをそのまま代入(=)
+            // done_at=>habit_idが存在しないなら$taken_timeをそのまま代入
             if (!isset($daily_sum_taken_time[$done_at][$habit_id])) {
                 $daily_sum_taken_time += [$done_at=>[$habit_id]];
                 $daily_sum_taken_time[$done_at][$habit_id]=$taken_time;
-            }
-            if (isset($daily_sum_taken_time[$done_at][$habit_id])) {
+            } else {
+                // if文だと、２回回ってしまうから、else文に戻した
                 $daily_sum_taken_time[$done_at][$habit_id]+=$taken_time;
             }
         }
-
+        // dd($daily_habits, $daily_sum_taken_time);
 
 
         // ↓はダミーデータ。これになるよう、SQLでDBからデータとってくる。
@@ -48,8 +48,6 @@ class DailyHabitController extends Controller
         //     '2021-05-06' => [1 => 120, 2 => 50],
         //     '2021-05-07' => [1 => 44, 2 => 55]
         // ];
-
-
 
 
         return view('daily_habit.index', \compact('habits', 'daily_sum_taken_time'));

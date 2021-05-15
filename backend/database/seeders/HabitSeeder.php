@@ -21,6 +21,9 @@ class HabitSeeder extends Seeder
             ],[
                 'habits_name'=>'筋トレ2',
                 'description'=>'ドラゴンフラッグ10回'
+            ],[
+                'habits_name'=>'ランニング',
+                'description'=>'皇居ラン'
             ]
         ]);
     }
