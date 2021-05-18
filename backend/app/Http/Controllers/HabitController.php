@@ -42,7 +42,7 @@ class HabitController extends Controller
         $habit->habits_name=$request->input('habits_name');
         $habit->description=$request->input('description');
         $habit->save();
-        return redirect('habits/index');
+        return redirect('myapp/habits/index');
     }
 
     /**

@@ -28,6 +28,24 @@
     <h1 >Show yourself</h1>
 </div>
 
+
+<div class="button_wrapper">
+    <!-- create/store -->
+    <button class="register_today">
+        <a href="{{route('daily_habit.create')}}">Register today</a>
+    </button>
+
+    <!-- show -->
+    <button class="show_record">
+        <a href="{{route('daily_habit.index')}}">Show Record</a>
+    </button>
+
+    <!-- create/store -->
+    <button class="register_habit">
+        <a href="{{route('habit.index')}}">Register Habit</a>
+    </button>
+</div>
+
 <div class="show_process_wrapper alert alert-warning">
     <div class="show_process_week">
         <h3>This Week</h3>
@@ -67,24 +85,6 @@
 
 </div>
 
-<div class="button_wrapper">
-    <!-- create/store -->
-    <button class="register_today">
-        <a href="{{route('daily_habit.create')}}">Register today</a>
-    </button>
-
-    <!-- show -->
-    <button class="show_record">
-        <a href="{{route('daily_habit.index')}}">Show Record</a>
-    </button>
-
-    <!-- create/store -->
-    <button class="register_habit">
-        <a href="{{route('habit.index')}}">Register Habit</a>
-    </button>
-
-
-</div>
 
 
 </div>
@@ -103,7 +103,8 @@
         justify-content: space-around;
     }
     .button_wrapper{
-        margin-top: 50px;
+        /* margin-top: 50px; */
+        margin: 20px 0;
         display: flex;
         justify-content: space-around;
 

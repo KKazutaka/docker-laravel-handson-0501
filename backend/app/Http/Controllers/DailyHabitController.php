@@ -38,8 +38,6 @@ class DailyHabitController extends Controller
                 $daily_sum_taken_time[$done_at][$habit_id]+=$taken_time;
             }
         }
-        // dd($daily_habits, $daily_sum_taken_time);
-
 
         // ↓はダミーデータ。これになるよう、SQLでDBからデータとってくる。
         // 'done_at'=>array(int habit_id=>int sum(taken_time), habit_id=>sum(taken_time)....),
