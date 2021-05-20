@@ -1,13 +1,6 @@
-<!DOCTYPE html>
-<html lang="ja">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+@extends('layouts.app')
 
-    <title>Document</title>
-</head>
-<body>
+@section('content')
 
 <?php
     $now_year = date("Y");
@@ -17,14 +10,14 @@
     $weekday = array("日","月","火","水","木","金","土");
 ?>
 
-<h2><?=$now_year?>年<?=$now_month?>月の進捗</h2>
+<h3 class="headline"><?=$now_year?>年<?=$now_month?>月の進捗</h3>
 
 
- <table border=1>
+ <table class="table table-bordered">
 <tr>
 <th>日付</th>
 @foreach($habits as $habit)
-<th style="min-width:100px;"><a href="{{route('habit.edit',['id'=>$habit->id])}}"> {{$habit->habits_name}}</a> </th>
+<th style="min-width:100px; text-align:center;"><a href="{{route('habit.edit',['id'=>$habit->id])}}"> {{$habit->habits_name}}</a> </th>
 @endforeach
 </tr>
 
@@ -78,5 +71,4 @@ if (!empty($daily_sum_taken_time[date("Y-m-$day")][$habit->id])) {
 
 </table>
 
-<body>
-</html>
+@endsection

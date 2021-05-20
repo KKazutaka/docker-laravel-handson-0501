@@ -79,7 +79,6 @@ class MyappController extends Controller
         //  $weekly_sum_taken_timesを空で用意してるのに、＊＊＊支倉未起隆＊＊＊の行で、先頭に[0=>hoge]がはいる。その対策として下記行を追加
         array_shift($month_sum_taken_times);
 
-
         //今週の初めと終わりの日にちをとってくる。
         $thisWeek = Carbon::parse('this week');
         $thisWeekStart = $thisWeek->startOfWeek()->format('Y-m-d');
@@ -116,7 +115,7 @@ class MyappController extends Controller
         $thisMonthStart = $thisMonth->startOfMonth()->format('Y-m-d');
         $thisMonthEnd = $thisMonth->endOfMonth()->format('Y-m-d');
 
-        // DailyHabitsから該当する内容をとってくる。
+        // DailyHabitsから該当する内容をとってくる。この時点で、期間内に存在しない行動はひろってこない。
         $thisMonthDailyHabits=DB::table('daily_habits')
                         ->join('habits', 'daily_habits.habit_id', '=', 'habits.id')
                         ->where('done_at', '>=', $thisMonthStart)
@@ -129,7 +128,6 @@ class MyappController extends Controller
             $habit_id = $thisMonthDailyHabit->habit_id;
             $habit_name = $thisMonthDailyHabit->habits_name;
             $taken_time = $thisMonthDailyHabit->taken_time;
-
             if (!isset($this_month_sum_taken_times[$habit_name])) {
                 // ＊＊＊支倉未起隆＊＊＊
                 $this_month_sum_taken_times += [$habit_name];
@@ -143,8 +141,28 @@ class MyappController extends Controller
         array_shift($this_month_sum_taken_times);
 
 
+        $compare_week = [
+            'last_week' =>$weekly_sum_taken_times,
+            'this_week'=>$this_week_sum_taken_times
+        ];
+        $compare_month = [
+            'last_month' =>$month_sum_taken_times,
+            'this_month'=>$this_month_sum_taken_times
+        ];
 
-        return view('myapp.index', \compact('weekly_sum_taken_times', 'lastWeekStart', 'lastWeekEnd', 'month_sum_taken_times', 'lastMonthStart', 'lastMonthEnd', 'this_week_sum_taken_times', 'thisWeekStart', 'thisWeekEnd', 'this_month_sum_taken_times', 'thisMonthStart', 'thisMonthEnd'));
+        // dd($weekly_sum_taken_times, $this_week_sum_taken_times);
+
+        $habits = DB::table('habits')
+                ->select('habits_name')
+                ->get()
+                ->toArray();
+        $habits = array_column($habits, 'habits_name');
+        $hogehabits = \json_encode($habits);
+
+        $hogehoge =\json_encode($compare_week);
+        // dd($habits, $hogehoge);
+        // dd($compare_week, $compare_month);
+        return view('myapp.index', \compact('weekly_sum_taken_times', 'lastWeekStart', 'lastWeekEnd', 'month_sum_taken_times', 'lastMonthStart', 'lastMonthEnd', 'this_week_sum_taken_times', 'thisWeekStart', 'thisWeekEnd', 'this_month_sum_taken_times', 'thisMonthStart', 'thisMonthEnd', 'hogehabits', 'hogehoge'));
     }
 
     /**

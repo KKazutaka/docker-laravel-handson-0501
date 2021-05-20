@@ -1,27 +1,38 @@
-<!DOCTYPE html>
-<html lang="ja">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
+@extends('layouts.app')
 
+
+@section('content')
+
+
+<h3 class="headline">
 新規作成
+</h3>
 <form method="POST" action="{{route('habit.store')}}">
 @csrf
+
+<div class="input-group">
 行動
-<input type="text" name="habits_name" placeholder="行動">
+<input type="text" class="form-control" name="habits_name" placeholder="行動">
 目標
-<input type="text" name="description" placeholder="具体的目標を書きましょう">
+<input type="text" class="form-control" name="description" placeholder="具体的目標を書きましょう">
+</div>
 <input class="btn btn-info" type="submit" value="登録する">
+
 </form>
 
 <br>
 <br>
-登録一覧
-    <table border=1>
+    <table class="table">
+        <tbody>
+        <thead>
+        <tr>
+
+        <th>登録一覧</th>
+        <th>目標</th>
+        <th></th>
+        <th></th>
+        </tr>
+        </thead>
         @foreach($habits as $habit)
         <tr>
             <th style="min-width:150px;">
@@ -33,32 +44,37 @@
             </td>
             <td>
                 <!-- TODO:ページ遷移せずに、ポップアップを表示したい -->
-                <a href="{{route('habit.edit',['id'=>$habit->id])}}">
+                <a href="{{route('habit.edit',['id'=>$habit->id])}}" class="btn btn-primary" >
                     編集
                 </a>
             </td>
             <td>
-            <form method="POST" action="{{route('habit.destroy',['id'=>$habit->id])}}">
+            <form method="POST" action="{{route('habit.destroy',['id'=>$habit->id])}}" id="delete_{{$habit->id}}">
             @csrf
-            <input type="submit" value="削除">
-            <!-- TODO：ダサいし、確認画面ほしい -->
-            <!-- <a href="#" date-id="{{$habit->id}}" onclick="deletePost(this);"> -->
-                <!-- 削除 -->
+            <!-- <input type="submit" value="削除"> -->
+            <a href="#" class="btn btn-danger" onclick="deletePost({{$habit->id}});">
+            <!-- udemy では、date-id=$habit->id を書いてたけど不要？ -->
+                削除
             </a>
             </form>
             </td>
-            @endforeach
         </tr>
+            @endforeach
+        </tbody>
     </table>
+
+
 
     <!-- 削除時の確認画面 -->
     <script>
-        function deletePost(e){
+        function deletePost(id){
             'use strict';
-            if(confirm('本当に削除していいですか？')){
-                document.getElementById('delete_'+e.dataset.id).submit();
+            if(window.confirm('本当に削除していいですか？')){
+                document.getElementById('delete_'+id).submit();
+                console.log(e.dataset.id);
             }
         }
     </script>
-</body>
-</html>
+
+
+@endsection
