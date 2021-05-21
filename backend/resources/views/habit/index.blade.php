@@ -10,18 +10,23 @@
 <form method="POST" action="{{route('habit.store')}}">
 @csrf
 
-<div class="input-group">
-行動
-<input type="text" class="form-control" name="habits_name" placeholder="行動">
-目標
-<input type="text" class="form-control" name="description" placeholder="具体的目標を書きましょう">
+
+<div class="input-group align-items-center row">
+        行動
+    <div class="col-4">
+        <input type="text" class="form-control" name="habits_name" placeholder="行動">
+    </div>
+
+        目標
+    <div class="col-5">
+        <input type="text" class="form-control " name="description" placeholder="具体的目標を書きましょう">
+    </div>
+<input class="btn btn-info col-1" type="submit" value="登録する">
 </div>
-<input class="btn btn-info" type="submit" value="登録する">
 
 </form>
 
-<br>
-<br>
+
     <table class="table">
         <tbody>
         <thead>

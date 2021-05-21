@@ -141,13 +141,13 @@ class MyappController extends Controller
         array_shift($this_month_sum_taken_times);
 
 
-        $compare_week = [
-            'last_week' =>$weekly_sum_taken_times,
-            'this_week'=>$this_week_sum_taken_times
+        $compareWeek = [
+            'lastWeek' =>$weekly_sum_taken_times,
+            'thisWeek'=>$this_week_sum_taken_times
         ];
-        $compare_month = [
-            'last_month' =>$month_sum_taken_times,
-            'this_month'=>$this_month_sum_taken_times
+        $compareMonth = [
+            'lastMonth' =>$month_sum_taken_times,
+            'thisMonth'=>$this_month_sum_taken_times
         ];
 
         // dd($weekly_sum_taken_times, $this_week_sum_taken_times);
@@ -157,12 +157,11 @@ class MyappController extends Controller
                 ->get()
                 ->toArray();
         $habits = array_column($habits, 'habits_name');
-        $hogehabits = \json_encode($habits);
+        $habits = \json_encode($habits);
 
-        $hogehoge =\json_encode($compare_week);
-        // dd($habits, $hogehoge);
-        // dd($compare_week, $compare_month);
-        return view('myapp.index', \compact('weekly_sum_taken_times', 'lastWeekStart', 'lastWeekEnd', 'month_sum_taken_times', 'lastMonthStart', 'lastMonthEnd', 'this_week_sum_taken_times', 'thisWeekStart', 'thisWeekEnd', 'this_month_sum_taken_times', 'thisMonthStart', 'thisMonthEnd', 'hogehabits', 'hogehoge'));
+        $compareWeek =\json_encode($compareWeek);
+        $compareMonth =\json_encode($compareMonth);
+        return view('myapp.index', \compact('weekly_sum_taken_times', 'lastWeekStart', 'lastWeekEnd', 'month_sum_taken_times', 'lastMonthStart', 'lastMonthEnd', 'this_week_sum_taken_times', 'thisWeekStart', 'thisWeekEnd', 'this_month_sum_taken_times', 'thisMonthStart', 'thisMonthEnd', 'habits', 'compareWeek', 'compareMonth'));
     }
 
     /**

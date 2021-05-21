@@ -20,7 +20,7 @@
                 font-family: 'Nunito', sans-serif;
             }
             #container{
-                max-width: 800px;
+                max-width: 980px;
                 margin:  0 auto;
             }
             .headline{
