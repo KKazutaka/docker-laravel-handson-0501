@@ -1,13 +1,14 @@
-fjadksj;<br>
-@foreach($weekly_sum_taken_times as $weekly_sum_taken_time)
-{{$weekly_sum_taken_time}} <br>
-@endforeach
+@extends('layouts.app')
 
-<!-- <script src="../../../node_modules/chart.js/dist/chart.js"></script> -->
-<script src="{{ asset('chart.js/chart.js') }}"></script>
+@section('content')
+<h4 class="heading">PlayGround & Memo</h4>
 
 
-<canvas id="sample3"></canvas>
+
+
+<!-- 下記はchart.jsを試した過去 -->
+<!-- <script src="{{ asset('chart.js/chart.js') }}"></script> -->
+<!-- <canvas id="sample3"></canvas> -->
 <script>
 
 
@@ -65,3 +66,4 @@ fjadksj;<br>
     });
 }());
 </script>
+@endsection

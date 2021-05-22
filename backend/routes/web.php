@@ -44,6 +44,15 @@ Route::group(['prefix'=>'myapp'], function () {
         Route::get('create', 'App\Http\Controllers\DailyHabitController@create')->name('daily_habit.create');
         Route::post('store', 'App\Http\Controllers\DailyHabitController@store')->name('daily_habit.store');
     });
+    Route::group(['prefix'=>'memo'], function () {
+        Route::get('', 'App\Http\Controllers\MemoController@index')->name('memo.index');
+        Route::get('create', 'App\Http\Controllers\MemoController@create')->name('memo.create');
+        Route::post('store', 'App\Http\Controllers\MemoController@store')->name('memo.store');
+        Route::get('show/{id}', 'App\Http\Controllers\MemoController@show')->name('memo.show');
+        Route::get('edit/{id}', 'App\Http\Controllers\MemoController@edit')->name('memo.edit');
+        Route::post('update/{id}', 'App\Http\Controllers\MemoController@update')->name('memo.update');
+        Route::post('destroy/{id}', 'App\Http\Controllers\MemoController@destroy')->name('memo.destroy');
+    });
 });
 
 

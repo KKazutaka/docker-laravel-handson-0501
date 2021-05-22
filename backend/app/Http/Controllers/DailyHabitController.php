@@ -72,12 +72,6 @@ class DailyHabitController extends Controller
         ->get()
         ->toArray();
 
-        // $key = array_search('$habit->habits_name', array_column($daily_habits, 'habits_name'));
-        // var_dump($daily_habits[$key]->taken_time);
-
-        // var_dump($daily_habits[0]->taken_time);
-        // これは表示されるのになぜだ・・
-
         $show_daily_habits=[];
 
         foreach ($habits as $habit) {
@@ -112,14 +106,13 @@ class DailyHabitController extends Controller
      */
     public function store(Request $request)
     {
-        // dd(date());
         $daily_habits = new DailyHabit;
         $daily_habits->habit_id=$request->input('habit_id');
         $daily_habits->taken_time=$request->input('taken_time');
         $daily_habits->description=$request->input('description');
         $daily_habits->done_at=date("Y-m-d");
         $daily_habits->save();
-        return redirect('myapp');
+        return redirect('myapp/daily_habits/create');
     }
 
     /**

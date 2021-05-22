@@ -82,7 +82,7 @@ class HabitController extends Controller
         $habit->habits_name=$request->input('habits_name');
         $habit->description=$request->input('description');
         $habit->save();
-        return redirect('habits/index');
+        return redirect('myapp/habits/index');
     }
 
     /**
@@ -94,7 +94,6 @@ class HabitController extends Controller
     public function destroy($id)
     {
         $habit=Habit::find($id);
-        var_dump("hello");
         $habit->delete();
         return \redirect('myapp/habits/index');
     }
