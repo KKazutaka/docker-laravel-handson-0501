@@ -1,84 +1,144 @@
 @extends('layouts.app')
 
 @section('content')
+
+
 <script src="{{ asset('chart.js/chart.js') }}"></script>
 
+<div class="day_wrapper" style="">
 
-<div class="headline">
-    <h1 >Show yourself</h1>
-</div>
-
-
-<div class="button_wrapper">
-    <!-- create/store -->
-    <button class="register_today btn btn-warning">
-        <a href="{{route('daily_habit.create')}}">Register today</a>
-    </button>
-
-    <!-- show -->
-    <button class="show_record btn btn-success">
-        <a href="{{route('daily_habit.index')}}">Show Record</a>
-    </button>
-
-    <!-- create/store -->
-    <button class="register_habit btn btn-dark">
-        <a href="{{route('habit.index')}}">Register Habit</a>
-    </button>
-</div>
-
-<div class="week_wrapper" style="">
-    <div class="show_process_wrapper alert alert-warning col-6">
-
+    <div class="alert alert-warning col-6">
+    <h3 class="text-center"><u>Compare 2day</u></h3>
+    <div class="show_process_wrapper">
         <div class="show_process_week">
-            <h3>Last Week</h3>
-            <p>{{$lastWeekStart}}〜<br>{{$lastWeekEnd}}</p>
+            <h5>Yesterday</h5>
 
-        @foreach($weekly_sum_taken_times as $habit_name => $taken_time)
+        @foreach($yesterday_sum_taken_times as $habit_name => $taken_time)
             <p>{{$habit_name}} : {{$taken_time}} m</p>
         @endforeach
         </div>
 
         <div class="show_process_week">
-            <h3>This Week</h3>
-            <p>{{$thisWeekStart}}〜<br>{{$thisWeekEnd}}</p>
+            <h5>Today</h5>
 
-        @foreach($this_week_sum_taken_times as $habit_name => $taken_time)
+        @foreach($today_sum_taken_times as $habit_name => $taken_time)
             <p>{{$habit_name}} : {{$taken_time}} m</p>
         @endforeach
         </div>
-
+    </div>
     </div><!-- show_process_wrapper -->
+
     <div class="col-6">
-        <canvas id="weekGraph"></canvas>
+        <canvas id="todayGraph"></canvas>
     </div>
 </div> <!-- week_wrapper -->
+<!-- class名を変えたい -->
 
-<div class="month_wrapper">
-    <div class="show_process_wrapper alert alert-warning col-6">
+<label for="toggle_week_month" style="width:100%;">
+<!-- MEMO:width100%しないとサイズかわってしまう。なぜ？ -->
+    <input type="checkbox" id="toggle_week_month">
 
-    <div class="show_process_month">
-        <h3>Last Month</h3>
-        <p>{{$lastMonthStart}}〜<br>{{$lastMonthEnd}}</p>
-    @foreach($month_sum_taken_times as $habit_name => $taken_time)
-        <p>{{$habit_name}} : {{$taken_time}} m</p>
-    @endforeach
-    </div>
+    <div class="week_wrapper">
 
-    <div class="show_process_month">
-        <h3>This Month</h3>
-        <p>{{$thisMonthStart}}〜<br>{{$thisMonthEnd}}</p>
-    @foreach($this_month_sum_taken_times as $habit_name => $taken_time)
-        <p>{{$habit_name}} : {{$taken_time}} m</p>
-    @endforeach
-    </div>
+    <div class="alert alert-info col-6">
+    <h3 class="text-center"><u>Compare week</u></h3>
+        <div class="show_process_wrapper">
 
-</div>
-    <div class="col-6">
-        <canvas id="monthGraph"></canvas>
-    </div>
-</div>
+            <div class="show_process_week">
+                <h3>Last Week</h3>
+                <p>{{$lastWeekStart}}〜<br>{{$lastWeekEnd}}</p>
+
+            @foreach($weekly_sum_taken_times as $habit_name => $taken_time)
+                <p>{{$habit_name}} : {{$taken_time}} m</p>
+            @endforeach
+            </div>
+
+            <div class="show_process_week">
+                <h3>This Week</h3>
+                <p>{{$thisWeekStart}}〜<br>{{$thisWeekEnd}}</p>
+
+            @foreach($this_week_sum_taken_times as $habit_name => $taken_time)
+                <p>{{$habit_name}} : {{$taken_time}} m</p>
+            @endforeach
+            </div>
+
+        </div><!-- show_process_wrapper -->
+        </div>
+        <div class="col-6">
+            <canvas id="weekGraph"></canvas>
+        </div>
+    </div> <!-- week_wrapper -->
+
+
+    <div class="month_wrapper">
+        <div class="show_process_wrapper alert alert-success col-6">
+
+        <div class="show_process_month">
+            <h3>Last Month</h3>
+            <p>{{$lastMonthStart}}〜<br>{{$lastMonthEnd}}</p>
+        @foreach($month_sum_taken_times as $habit_name => $taken_time)
+            <p>{{$habit_name}} : {{$taken_time}} m</p>
+        @endforeach
+        </div>
+
+        <div class="show_process_month">
+            <h3>This Month</h3>
+            <p>{{$thisMonthStart}}〜<br>{{$thisMonthEnd}}</p>
+        @foreach($this_month_sum_taken_times as $habit_name => $taken_time)
+            <p>{{$habit_name}} : {{$taken_time}} m</p>
+        @endforeach
+        </div>
+
+        </div>
+        <div class="col-6">
+            <canvas id="monthGraph"></canvas>
+        </div>
+    </div><!-- month_wrapper -->
+    </input>
+</label>
 
 <script>
+(function(){
+  var ctx = document.getElementById("todayGraph");
+
+  labelNames = '{!!$habits!!}'
+  NumData = '{!!$compareToday!!}'
+
+  labelNames = JSON.parse(labelNames);
+  NumData = JSON.parse(NumData);
+
+  let backgroundColor = [
+                'rgba(255, 99, 132, 0.2)',
+                'rgba(54, 162, 235, 0.2)',
+                'rgba(255, 206, 86, 0.2)',
+                'rgba(75, 192, 192, 0.2)'
+            ]
+
+  let datasets = []
+  for(let ln of labelNames){
+    datasets.push({
+        label:ln,
+        data:[NumData.yesterday[ln] || 0,NumData.today[ln] || 0],
+        backgroundColor:'rgba(75, 192, 192, 0.2)',
+        borderColor:'rgba(75, 192, 192, 1)',
+        borderWidth: 1
+        })
+  }
+
+
+  var data = {
+        labels: ["Yesterday","Today"],
+        datasets:datasets
+    };
+
+    var options = {};
+    var ex_chart = new Chart(ctx, {
+        type: 'bar', //折れ線グラフ
+        data: data, //上記設定のデータ
+        options: options
+    });
+}());
+
 (function(){
   var ctx = document.getElementById("weekGraph");
 
@@ -152,24 +212,33 @@
 
 
 
-
-
 <style>
-
-    .week_wrapper,
-    .month_wrapper{
+    .day_wrapper,
+    .week_wrapper{
         display:flex;
     }
+
+    .month_wrapper{
+        display:none;
+    }
+
+    input[type='checkbox']{
+        display:none;
+    }
+    #toggle_week_month:hover{
+        box-shadow: 0 15px 30px -5px rgba(0,0,0,.15), 0 0 5px rgba(0,0,0,.1);
+        transform: translateY(-4px);
+    }
+    #toggle_week_month:checked ~ .month_wrapper{
+        display:flex;
+    }
+    #toggle_week_month:checked + .week_wrapper{
+        display:none;
+    }
+
     .show_process_wrapper{
         display: flex;
         justify-content: space-around;
-    }
-    .button_wrapper{
-        /* margin-top: 50px; */
-        margin: 20px 0;
-        display: flex;
-        justify-content: space-around;
-
     }
 </style>
 

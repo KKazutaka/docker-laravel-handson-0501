@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Habit;
 use App\Models\DailyHabit;
 use Illuminate\Support\Facades\DB;
+use Carbon\Carbon;
 
 class DailyHabitController extends Controller
 {
@@ -58,8 +59,49 @@ class DailyHabitController extends Controller
      */
     public function create()
     {
-        $habits = DB::table('habits')->get();
-        return view('daily_habit.create', compact('habits'));
+        $habits = DB::table('habits')
+                ->get();
+        // ->toArray();
+
+        $today = Carbon::today()->format('Y-m-d');
+        $daily_habits=DB::table('daily_habits')
+        ->join('habits', 'daily_habits.habit_id', '=', 'habits.id')
+        ->select('habit_id', 'habits_name', DB::raw('sum(taken_time) as taken_time'))
+        ->where('done_at', '=', $today)
+        ->groupBy('habit_id')
+        ->get()
+        ->toArray();
+
+        // $key = array_search('$habit->habits_name', array_column($daily_habits, 'habits_name'));
+        // var_dump($daily_habits[$key]->taken_time);
+
+        // var_dump($daily_habits[0]->taken_time);
+        // これは表示されるのになぜだ・・
+
+        $show_daily_habits=[];
+
+        foreach ($habits as $habit) {
+            $habit_id = $habit->id;
+            $habits_name = $habit->habits_name;
+            $description = $habit->description;
+
+            $key = array_search($habit->id, array_column($daily_habits, 'habit_id'));
+
+            if ($key||$key===0) {
+                $taken_time =$daily_habits[$key]->taken_time;
+            } else {
+                $taken_time =0;
+                // 解決してない！！！
+                // $daily_habits[0]のtaken_timeをとってくることができないのはなぜか
+                // if ($key===0)という書き方が謎です。
+            }
+            // array_push($show_daily_habits, [$habits_name,$description,$taken_time]);
+            array_push($show_daily_habits, ["habit_id"=>$habit_id, "habits_name"=>$habits_name,"description"=>$description,"taken_time"=>$taken_time]);
+            echo "<br>";
+        }
+        // dd($habits, $daily_habits, $show_daily_habits, $daily_habits[0]);
+
+        return view('daily_habit.create', compact('habits', 'daily_habits', 'show_daily_habits'));
     }
 
     /**

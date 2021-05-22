@@ -10,7 +10,8 @@
     $weekday = array("日","月","火","水","木","金","土");
 ?>
 
-<h3 class="headline"><?=$now_year?>年<?=$now_month?>月の進捗</h3>
+
+<h3> This Month( <?=$now_year?>.<?=$now_month?> ) Progress</h3>
 
 
  <table class="table table-bordered">

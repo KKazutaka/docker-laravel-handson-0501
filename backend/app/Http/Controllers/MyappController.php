@@ -17,6 +17,56 @@ class MyappController extends Controller
      */
     public function index()
     {
+        $yesterday = Carbon::yesterday()->format('Y-m-d');
+        $today = Carbon::today()->format('Y-m-d');
+
+        $yesterdayDailyHabits=DB::table('daily_habits')
+                ->join('habits', 'daily_habits.habit_id', '=', 'habits.id')
+                ->where('done_at', '=', $yesterday)
+                ->get()
+                ->toArray();
+
+        $yesterday_sum_taken_times = [];
+        foreach ($yesterdayDailyHabits as $yesterdayDailyHabit) {
+            $habit_id = $yesterdayDailyHabit->habit_id;
+            $habit_name = $yesterdayDailyHabit->habits_name;
+            $taken_time = $yesterdayDailyHabit->taken_time;
+
+            if (!isset($yesterday_sum_taken_times[$habit_name])) {
+                // ＊＊＊支倉未起隆＊＊＊
+                $yesterday_sum_taken_times += [$habit_name];
+                $yesterday_sum_taken_times[$habit_name] = $taken_time;
+            } else {
+                $yesterday_sum_taken_times[$habit_name]+=$taken_time;
+            }
+        }
+        array_shift($yesterday_sum_taken_times);
+
+        $todayDailyHabits=DB::table('daily_habits')
+                ->join('habits', 'daily_habits.habit_id', '=', 'habits.id')
+                ->where('done_at', '=', $today)
+                ->get()
+                ->toArray();
+
+        $today_sum_taken_times = [];
+        foreach ($todayDailyHabits as $todayDailyHabit) {
+            $habit_id = $todayDailyHabit->habit_id;
+            $habit_name = $todayDailyHabit->habits_name;
+            $taken_time = $todayDailyHabit->taken_time;
+
+            if (!isset($today_sum_taken_times[$habit_name])) {
+                // ＊＊＊支倉未起隆＊＊＊
+                $today_sum_taken_times += [$habit_name];
+                $today_sum_taken_times[$habit_name] = $taken_time;
+            } else {
+                $today_sum_taken_times[$habit_name]+=$taken_time;
+            }
+        }
+        array_shift($today_sum_taken_times);
+
+
+
+
         //先週の初めと終わりの日にちをとってくる。
         $lastWeek = Carbon::parse('last week');
         $lastWeekStart = $lastWeek->startOfWeek()->format('Y-m-d');
@@ -49,12 +99,11 @@ class MyappController extends Controller
         array_shift($weekly_sum_taken_times);
 
 
-        //先週の初めと終わりの日にちをとってくる。
+        //先月の初めと終わりの日にちをとってくる。
         $lastMonth = Carbon::parse('last month');
         $lastMonthStart = $lastMonth->startOfMonth()->format('Y-m-d');
         $lastMonthEnd = $lastMonth->endOfMonth()->format('Y-m-d');
 
-        // DailyHabitsから該当する内容をとってくる。
         $lastMonthDailyHabits=DB::table('daily_habits')
                         ->join('habits', 'daily_habits.habit_id', '=', 'habits.id')
                         ->where('done_at', '>=', $lastMonthStart)
@@ -76,7 +125,6 @@ class MyappController extends Controller
                 $month_sum_taken_times[$habit_name]+=$taken_time;
             }
         }
-        //  $weekly_sum_taken_timesを空で用意してるのに、＊＊＊支倉未起隆＊＊＊の行で、先頭に[0=>hoge]がはいる。その対策として下記行を追加
         array_shift($month_sum_taken_times);
 
         //今週の初めと終わりの日にちをとってくる。
@@ -136,11 +184,13 @@ class MyappController extends Controller
                 $this_month_sum_taken_times[$habit_name]+=$taken_time;
             }
         }
-
-        //  $monthly_sum_taken_timesを空で用意してるのに、＊＊＊支倉未起隆＊＊＊の行で、先頭に[0=>hoge]がはいる。その対策として下記行を追加
         array_shift($this_month_sum_taken_times);
 
 
+        $compareToday = [
+            'yesterday' =>$yesterday_sum_taken_times,
+            'today'=>$today_sum_taken_times
+        ];
         $compareWeek = [
             'lastWeek' =>$weekly_sum_taken_times,
             'thisWeek'=>$this_week_sum_taken_times
@@ -159,9 +209,10 @@ class MyappController extends Controller
         $habits = array_column($habits, 'habits_name');
         $habits = \json_encode($habits);
 
+        $compareToday =\json_encode($compareToday);
         $compareWeek =\json_encode($compareWeek);
         $compareMonth =\json_encode($compareMonth);
-        return view('myapp.index', \compact('weekly_sum_taken_times', 'lastWeekStart', 'lastWeekEnd', 'month_sum_taken_times', 'lastMonthStart', 'lastMonthEnd', 'this_week_sum_taken_times', 'thisWeekStart', 'thisWeekEnd', 'this_month_sum_taken_times', 'thisMonthStart', 'thisMonthEnd', 'habits', 'compareWeek', 'compareMonth'));
+        return view('myapp.index', \compact('yesterday_sum_taken_times', 'today_sum_taken_times', 'weekly_sum_taken_times', 'lastWeekStart', 'lastWeekEnd', 'month_sum_taken_times', 'lastMonthStart', 'lastMonthEnd', 'this_week_sum_taken_times', 'thisWeekStart', 'thisWeekEnd', 'this_month_sum_taken_times', 'thisMonthStart', 'thisMonthEnd', 'habits', 'compareWeek', 'compareMonth', 'compareToday'));
     }
 
     /**

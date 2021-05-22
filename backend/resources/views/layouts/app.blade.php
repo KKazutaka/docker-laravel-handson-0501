@@ -26,17 +26,49 @@
             .headline{
                 text-align: center;
             }
+            .header{
+                margin: 20px 0;
+                display: flex;
+                justify-content: space-around;
+
+            }
         </style>
     </head>
+
 
     <body class="antialiased">
     <div id="container">
 
+    <header class="header">
+        <!-- TODO:各ページに合わせて、TOP buttonをつくりたい -->
+            <!-- <button class="btn btn-primary col-2">
+                <a href="{{route('myapp.index')}}">Top</a>
+            </button> -->
+        <h1><a href="{{route('myapp.index')}}">Make Habit</a></h1>
+        <input type="button" onclick="location.href='{{route("daily_habit.create")}}'" class="btn btn-warning col-2" value="Today">
+        <input type="button" onclick="location.href='{{route("daily_habit.index")}}'" class="btn btn-success col-2" value="This Month">
+        <input type="button" onclick="location.href='{{route("habit.index")}}'" class="btn btn-dark col-2" value="New Habit">
+
+    </header>
+
+
     @yield('content')
 
-
     <footer>
-    <a href="{{route('myapp.index')}}" style="float:right;" class="btn btn-link">Top画面へ戻る</a>
+        <input type="button" onclick="history.back()" style="float:right;" class="btn btn-link" value="戻る">
+
+        <label for="memo">hoge</label>
+        <input type="checkbox" id="memo">
+        <p></p>
+        <style>
+        input#memo{
+            display:none;
+        }
+        input#memo[checked]+p{
+            display:block;
+        }
+        </style>
+
     </footer>
 
     </div>

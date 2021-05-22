@@ -4,22 +4,20 @@
 @section('content')
 
 
-<h3 class="headline">
-新規作成
-</h3>
+<h3>Register New Habit </h3>
 <form method="POST" action="{{route('habit.store')}}">
 @csrf
 
 
 <div class="input-group align-items-center row">
-        行動
+        Action
     <div class="col-4">
-        <input type="text" class="form-control" name="habits_name" placeholder="行動">
+        <input type="text" class="form-control" name="habits_name" required placeholder="行動">
     </div>
 
-        目標
+        Target
     <div class="col-5">
-        <input type="text" class="form-control " name="description" placeholder="具体的目標を書きましょう">
+        <input type="text" class="form-control " name="description" required placeholder="具体的目標を書きましょう">
     </div>
 <input class="btn btn-info col-1" type="submit" value="登録する">
 </div>
@@ -32,7 +30,7 @@
         <thead>
         <tr>
 
-        <th>登録一覧</th>
+        <th>行動一覧</th>
         <th>目標</th>
         <th></th>
         <th></th>
