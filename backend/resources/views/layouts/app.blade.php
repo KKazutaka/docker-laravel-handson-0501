@@ -4,7 +4,7 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
-        <title>po</title>
+        <title>Expence</title>
 
         <!-- Fonts -->
         <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
@@ -41,10 +41,10 @@
 
     <header class="header">
         <!-- TODO:各ページに合わせて、TOP buttonをつくりたい -->
-        <h1><a href="{{route('myapp.index')}}">Make Habit</a></h1>
+        <h1><a href="{{route('myapp.index')}}">Grasp Expense</a></h1>
         <input type="button" onclick="location.href='{{route("daily_habit.create")}}'" class="btn btn-warning col-2" value="Today">
         <input type="button" onclick="location.href='{{route("daily_habit.index")}}'" class="btn btn-success col-2" value="This Month">
-        <input type="button" onclick="location.href='{{route("habit.index")}}'" class="btn btn-dark col-2" value="New Habit">
+        <input type="button" onclick="location.href='{{route("habit.index")}}'" class="btn btn-dark col-2" value="New Category">
 
     </header>
 

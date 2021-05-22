@@ -58,9 +58,9 @@ if (strlen($day)==1) {
 // ダミーデータarray $aks はあとで変更させる。
 if (!empty($daily_sum_taken_time[date("Y-m-$day")][$habit->id])) {
     echo $daily_sum_taken_time[date("Y-m-$day")][$habit->id];
-    echo "m (";
-    echo round(intval($daily_sum_taken_time[date("Y-m-$day")][$habit->id]) / 60, 2);
-    echo "h)";
+    echo "円 ";
+    // echo round(intval($daily_sum_taken_time[date("Y-m-$day")][$habit->id]) / 60, 2);
+    // echo "h)";
 }
 ?>
 

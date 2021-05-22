@@ -4,36 +4,34 @@
 @section('content')
 
 
-<h3>Register New Habit </h3>
+<h3>Register New Category </h3>
 <form method="POST" action="{{route('habit.store')}}">
 @csrf
 
 
 <div class="input-group align-items-center row">
-        Action
+        Category
     <div class="col-4">
-        <input type="text" class="form-control" name="habits_name" required placeholder="行動">
+        <input type="text" class="form-control" name="habits_name" required placeholder="カテゴリー">
     </div>
 
-        Target
+        Description
     <div class="col-5">
-        <input type="text" class="form-control " name="description" required placeholder="具体的目標を書きましょう">
+        <input type="text" class="form-control " name="description" required placeholder="具体的な支出例などの詳細を書きましょう">
     </div>
 <input class="btn btn-info col-1" type="submit" value="登録する">
 </div>
 
 </form>
 
-
     <table class="table">
         <tbody>
         <thead>
         <tr>
-
-        <th>行動一覧</th>
-        <th>目標</th>
-        <th></th>
-        <th></th>
+            <th>カテゴリー一覧</th>
+            <th>詳細</th>
+            <th></th>
+            <th></th>
         </tr>
         </thead>
         @foreach($habits as $habit)
